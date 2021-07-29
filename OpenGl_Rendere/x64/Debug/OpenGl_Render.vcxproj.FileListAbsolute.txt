@@ -1,1 +1,2 @@
 C:\Users\Prophet\Documents\OpenGl_Rendere\x64\Debug\OpenGl_Render.exe
+C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Rendere\x64\Debug\OpenGl_Render.exe
