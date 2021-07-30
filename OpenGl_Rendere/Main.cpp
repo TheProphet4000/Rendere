@@ -1,6 +1,7 @@
 #include<iostream>
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
+#include<stb/stb_image.h>
 
 #include "shaderClass.h" //Farver
 #include "VAO.h"		//VertexArrayObject
@@ -9,21 +10,17 @@
 
 
 GLfloat vertices[] = {
-//    -X-     |                    -Y-		    		 |		-Farver-
-	-0.5f,      -0.5f  * float(sqrt(3))     / 3,  0.0f,		0.8f,	0.3f,	0.2f,	  //Bund venstre hjørne
-	 0.5f,      -0.5f  * float(sqrt(3))     / 3,  0.0f,		0.8f,	0.3f,	0.2f,	 //Bund højer hjørne
-	 0.0f,       0.5f  * float(sqrt(3)) * 2 / 3,  0.0f,		1.0f,	0.6f,	0.32f,	// Top Midt hjørne
-
-    -0.5f / 2,   0.5f  * float(sqrt(3))     / 6,  0.0f,		0.9f,	0.45f,	0.17f,	  //Mid venstre hjørne
-	 0.5f / 2,   0.5f  * float(sqrt(3))     / 6,  0.0f,		0.9f,	0.45f,	0.17f,	 //Mid Højer Hjørne
-	 0.0f,      -0.5f  * float(sqrt(3))     / 3,  0.0f,		0.8f,	0.3f,	0.02f,	// Mid Bund hjørne
+//		 -Kordinater-	   |		  -Farver-			|		Textur Kordinater			 OpenGL blander gradiere farveværdierne
+	-0.5f,	-0.5f,	0.0f,		1.0f,	0.0f,	0.0f,		0.0f, 0.0f,	   // bund højer
+	-0.5f,	 0.5f,	0.0f,		0.0f,	1.0f,	0.0f,		0.0f, 1.0f,	  // top højer
+	 0.5f,	 0.5f,	0.0f,		0.0f,	0.0f,	1.0f,		1.0f, 1.0f,	 // top venstre
+	 0.5f,	-0.5f,	0.0f,		1.0f,	1.0f,	1.0f,		1.0f, 0.0f, // bund højer
 };
 
 GLuint indices[] = { //WTF er dette
 
-	0, 3, 5,  //Bund Venstre trekant
-	3, 2, 4, //Bund Højer trekant
-	5, 4, 1 //Top trekant
+	0,	2,	1,  //top trekant
+	0,	3,	2, //bund trekant
 };
 
 int main() {
@@ -64,8 +61,9 @@ int main() {
 	EBO EBO1(indices, sizeof(indices));
 
 	//Binder VBO, til VAO
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3* sizeof(float)));
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 
 
 	//unbind for ikke at ændre i unødvendige ting, ved fejl.
@@ -74,6 +72,37 @@ int main() {
 	EBO1.Unbind();
 
 	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
+
+	//Textures
+
+	int width, hight, numColCh;
+
+	stbi_set_flip_vertically_on_load(true); //vender billede, der stbi loader nedefra, og ikke oppefra.
+
+	//loader billedet i en characther værdi
+	unsigned char* bytes = stbi_load("blyat.png", &width, &hight, &numColCh, 0);
+
+	//Indexer billedet, og aktivere det
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //LINEAR blander pixels, NEAREST holder pixels orginalt.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, hight, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	stbi_image_free(bytes);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	GLuint tex0 = glGetUniformLocation(shaderProgram.ID, "tex0");
+	shaderProgram.Activate();
+	glUniform1i(tex0, 0);
 
 	//Fortæller glfw at den skal updatere events, når de er klar. MAIN while
 	while (!glfwWindowShouldClose(window)) {
@@ -85,13 +114,15 @@ int main() {
 		//fortæller openGL hvilke shader der er i brug
 		shaderProgram.Activate();
 
+
 		glUniform1f(uniID, 0.5f);
+		glBindTexture(GL_TEXTURE_2D, texture);
 
 		//binder shaderen, så den bliver brugt
 		VAO1.Bind();
 
 		//tegner trekanterne     hvor mange         index af indices
-		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		//Skifer usynlige, og synlige buffers
 		glfwSwapBuffers(window);
@@ -105,6 +136,7 @@ int main() {
 	VAO1.Delete();
 	VBO1.Delete();
 	EBO1.Delete();
+	glDeleteTextures(1, &texture);
 	shaderProgram.Delete();
 
 	//lukker vinduet
