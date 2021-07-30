@@ -9,14 +9,14 @@
 
 
 GLfloat vertices[] = {
-//    -X-                  -Y-
-	-0.5f,      -0.5f  * float(sqrt(3))     / 3,  0.0f,   //Bund venstre hjørne
-	 0.5f,      -0.5f  * float(sqrt(3))     / 3,  0.0f,  //Bund højer hjørne
-	 0.0f,       0.5f  * float(sqrt(3)) * 2 / 3,  0.0f, // Top Midt hjørne
+//    -X-     |                    -Y-		    		 |		-Farver-
+	-0.5f,      -0.5f  * float(sqrt(3))     / 3,  0.0f,		0.8f,	0.3f,	0.2f,	  //Bund venstre hjørne
+	 0.5f,      -0.5f  * float(sqrt(3))     / 3,  0.0f,		0.8f,	0.3f,	0.2f,	 //Bund højer hjørne
+	 0.0f,       0.5f  * float(sqrt(3)) * 2 / 3,  0.0f,		1.0f,	0.6f,	0.32f,	// Top Midt hjørne
 
-    -0.5f / 2,   0.5f  * float(sqrt(3))     / 6,  0.0f,  //Mid venstre hjørne
-	 0.5f / 2,   0.5f  * float(sqrt(3))     / 6,  0.0f, //Mid Højer Hjørne
-	 0.0f,      -0.5f  * float(sqrt(3))     / 3,  0.0f // Mid Bund hjørne
+    -0.5f / 2,   0.5f  * float(sqrt(3))     / 6,  0.0f,		0.9f,	0.45f,	0.17f,	  //Mid venstre hjørne
+	 0.5f / 2,   0.5f  * float(sqrt(3))     / 6,  0.0f,		0.9f,	0.45f,	0.17f,	 //Mid Højer Hjørne
+	 0.0f,      -0.5f  * float(sqrt(3))     / 3,  0.0f,		0.8f,	0.3f,	0.02f,	// Mid Bund hjørne
 };
 
 GLuint indices[] = { //WTF er dette
@@ -63,13 +63,19 @@ int main() {
 	VBO VBO1(vertices, sizeof(vertices));
 	EBO EBO1(indices, sizeof(indices));
 
-	VAO1.LinkVBO(VBO1, 0);
+	//Binder VBO, til VAO
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3* sizeof(float)));
 
+
+	//unbind for ikke at ændre i unødvendige ting, ved fejl.
 	VAO1.Unbind();
 	VBO1.Unbind();
 	EBO1.Unbind();
 
-	//Fortæller glfw at den skal updatere events, når de er klar.
+	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
+
+	//Fortæller glfw at den skal updatere events, når de er klar. MAIN while
 	while (!glfwWindowShouldClose(window)) {
 
 		//tegner baggrunds farve
@@ -78,6 +84,8 @@ int main() {
 
 		//fortæller openGL hvilke shader der er i brug
 		shaderProgram.Activate();
+
+		glUniform1f(uniID, 0.5f);
 
 		//binder shaderen, så den bliver brugt
 		VAO1.Bind();
