@@ -1,5 +1,6 @@
 #include "shaderClass.h"
 
+//læser tekstfil og retunere alt der står i den fil
 std::string get_file_contents(const char* filename) {
 
 	std::ifstream in(filename, std::ios::binary);
