@@ -1,5 +1,6 @@
-#include <GLFW/glfw3.h>
-#include <iostream>
+#include "GLFW/glfw3.h"
+#include "iostream"
+#include "Coordinates.h"
 
 int main() {
 	glfwInit();
@@ -8,31 +9,34 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(900, 800, "Render", NULL, NULL);
+	float R = 0.5f, G = 0.5f, B = 1.0f;
 
-	if (window == NULL) {
+	if (window == NULL) { 
 		std::cout << "GLFW window couldn't be created... no window for you :'( " << std::endl;
 		glfwTerminate();
 		return -1;
 	}
 
+
 	glfwMakeContextCurrent(window);
 
-	/* Loop until the user closes the window */
+	//Loop until the user closes the window
 	while (!glfwWindowShouldClose(window))
 	{
-		/* Render here */
+		//Render here
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		/* Swap front and back buffers */
+		//Swap front and back buffers
 		glfwSwapBuffers(window);
 
-		/* Poll for and process events */
+		//Poll for and process events
 		glfwPollEvents();
 
-		glClearColor(0.1f, 1.0f, 1.0f, 1.0f);
+		glClearColor(R, G, B, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
-
 	glfwTerminate();
 	return 0;
+
+
 }
