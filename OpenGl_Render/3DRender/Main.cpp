@@ -7,7 +7,7 @@ int main() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "Andreasen Render", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(900, 800, "Render", NULL, NULL);
 
 	if (window == NULL) {
 		std::cout << "GLFW window couldn't be created... no window for you :'( " << std::endl;
@@ -28,6 +28,9 @@ int main() {
 
 		/* Poll for and process events */
 		glfwPollEvents();
+
+		glClearColor(0.1f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 	glfwTerminate();
