@@ -80,11 +80,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\Liberies\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\Liberies\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\Liberies\glfw-3.3.7.bin.WIN64\include;C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\Liberies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\Liberies;C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\Liberies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\Liberies\glfw-3.3.7.bin.WIN64\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\Liberies;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
