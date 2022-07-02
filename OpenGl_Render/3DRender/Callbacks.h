@@ -6,5 +6,5 @@ static void glfw_error_callback(int error, const char* description) {
 }
 
 static void glfw_window_close_callback(GLFWwindow* window) {
-	printf("Window closed");
+	printf("Window closed \n");
 }
