@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 	glfwSetWindowCloseCallback(window, glfw_window_close_callback); //call close window
 
 	//this need to be fixed, should call terminate and not a loop!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	while (!true) {
+	while (true) {
 		glfwSwapBuffers(window); //swap back and front buffer screens
 		glfwPollEvents(); //add commands to the render pool
 	}
