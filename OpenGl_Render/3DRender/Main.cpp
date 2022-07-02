@@ -5,10 +5,22 @@
 #include "Callbacks.h"
 
 int main(int argc, char** argv) {
-	glfwSetErrorCallback(glfw_error_callback);
 	glfwInit();
+	glfwSetErrorCallback(glfw_error_callback);
 
-	GLFWwindow* window = glfwCreateWindow(900, 800, "RenderMaster", NULL, NULL);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	GLFWwindow* window = glfwCreateWindow(900, 800, "RenderMaster", nullptr, nullptr);
+
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	glfwSetWindowCloseCallback(window, glfw_window_close_callback);
+
+	while (!glfwWindowShouldClose) {
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+
+	glfwTerminate();
+	return 0;
 }
