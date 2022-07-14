@@ -1,2 +1,2 @@
 ﻿  Main.cpp
-  3Drender.vcxproj -> C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\3DRender\x64\Debug\3Drender.exe
+C:\Users\Prophet\Documents\GitHub\Rendere\OpenGl_Render\3DRender\Main.cpp(42,25): error C3861: 'UploadMesh': identifier not found

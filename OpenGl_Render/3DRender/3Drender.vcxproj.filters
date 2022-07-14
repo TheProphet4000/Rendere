@@ -23,10 +23,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Coordinates.h">
+    <ClInclude Include="Callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Callbacks.h">
+    <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL_Loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
